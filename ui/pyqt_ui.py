@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox, QGridLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QPushButton, QMessageBox, QGridLayout, QSizePolicy
 from PyQt5.QtCore import Qt, QSize
 
-from game.minesweeper import Minesweeper
+from minesweeper.game.minesweeper import Minesweeper
 
 
 class QMinesweeper(QWidget):
@@ -52,7 +52,7 @@ class QMinesweeper(QWidget):
                 self.layout().addWidget(button, coords[0], coords[1])
                 button.clicked.connect(lambda _, button=button, block=block: button.clickEvent(block))
                 button.customContextMenuRequested.connect(lambda _, button=button, block=block: button.menuEvent(block))
-                block.button = button
+                block.display = button.updateEvent
 
     def mark(self, block):
         block.toggle_mark()
