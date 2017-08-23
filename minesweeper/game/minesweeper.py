@@ -26,6 +26,7 @@ class Minesweeper():
 
     def reset(self):
         self.board.reset()
+        self.board.generate()
         self.refresh()
 
     def solve(self):

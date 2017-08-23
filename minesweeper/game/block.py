@@ -4,7 +4,7 @@ class Block():
         self.coords = coords
         self.value = 0
         self.is_visible = False
-        self.display = None
+        self.update = None
         self.marked = False
 
     def set_value(self, value):
@@ -40,7 +40,7 @@ class Block():
             self.marked = True
 
     def refresh(self):
-        self.display and self.display(self)
+        self.update and self.update(self)
 
     def reset(self):
         self.value = 0

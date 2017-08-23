@@ -44,15 +44,13 @@ def test_refresh(mock_block):
     assert mock_block.call_count == 100
 
 
-@mock.patch('minesweeper.game.block.Block.refresh')
-def test_show(mock_block):
+def test_reveal():
     board = Board(10, 10, 10)
     board.generate()
-    board.show()
-
-
-@mock.patch('minesweeper.game.block.Block.reveal')
-def test_reveal(mock_block):
-    board = Board(10, 10, 10)
-    board.generate()
+    board[0][0].set_value(0)
+    board[0][1].set_value(1)
+    board[0][2].make_bomb()
     board.reveal(board[0][0])
+    assert board[0][0].is_visible
+    assert board[0][1].is_visible
+    assert not board[0][2].is_visible

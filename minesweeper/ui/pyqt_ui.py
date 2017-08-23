@@ -1,8 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QPushButton, QMessageBox, QGridLayout, QSizePolicy
 from PyQt5.QtCore import Qt, QSize
 
-from minesweeper.game.minesweeper import Minesweeper
-
 
 class QMinesweeper(QWidget):
     class QBlockButton(QPushButton):
@@ -31,9 +29,9 @@ class QMinesweeper(QWidget):
         def sizeHint(self):
             return QSize(35, 35)
 
-    def __init__(self, size):
+    def __init__(self, engine, width, height, bomb_number):
         super(QMinesweeper, self).__init__()
-        self.minesweeper = Minesweeper()
+        self.minesweeper = engine(width, height, bomb_number)
         self.initUI()
         self.show()
         self.minesweeper.show()
@@ -52,7 +50,7 @@ class QMinesweeper(QWidget):
                 self.layout().addWidget(button, coords[0], coords[1])
                 button.clicked.connect(lambda _, button=button, block=block: button.clickEvent(block))
                 button.customContextMenuRequested.connect(lambda _, button=button, block=block: button.menuEvent(block))
-                block.display = button.updateEvent
+                block.update = button.updateEvent
 
     def mark(self, block):
         block.toggle_mark()
@@ -63,11 +61,11 @@ class QMinesweeper(QWidget):
         self.minesweeper.refresh()
 
         if block.is_bomb():
-            QMessageBox.critical(self, self.tr("Defeat!"), self.tr("You lost :("), QMessageBox.Ok)
+            QMessageBox.critical(self, self.tr("Defeat!"), self.tr("You loose :("), QMessageBox.Ok)
             self.minesweeper.reset()
 
         if self.minesweeper.finished:
-            QMessageBox.information(self, self.tr("Victory!"), self.tr("You won :)"), QMessageBox.Ok)
+            QMessageBox.information(self, self.tr("Victory!"), self.tr("You win :)"), QMessageBox.Ok)
             self.minesweeper.reset()
 
     def sizeHint(self):
