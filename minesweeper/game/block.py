@@ -47,6 +47,17 @@ class Block():
         self.is_visible = False
         self.marked = False
 
+    def serialize(self):
+        value = self.get_value()
+        if self.is_bomb():
+            value = 'B'
+        if not self.is_visible:
+            value = ''
+        if self.is_marked():
+            value = 'X'
+
+        return value
+
     def __repr__(self):
         if self.is_marked():
             return 'X'

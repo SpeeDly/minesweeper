@@ -35,6 +35,12 @@ class Minesweeper():
                 if not block.is_bomb():
                     block.reveal()
 
+    def serialize(self):
+        return {
+            'status': 0,
+            'board': self.board.serialize()
+        }
+
     @property
     def finished(self):
         open_blocks = 0

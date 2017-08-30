@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Minesweeper</title>
+</head>
+<body>
+    <ul id="navigation">
+    {{ games }}
+    {% for game in games %}
+        <li><a href="/game/{{ game.id }}">{{ game.id }} - {{ game.status }}</a></li>
+    {% endfor %}
+    </ul>
+
+</body>
+</html>

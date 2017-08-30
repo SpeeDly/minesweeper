@@ -100,3 +100,14 @@ class Board():
         for row in self:
             for block in row:
                 block.reset()
+
+    def serialize(self):
+        board = []
+
+        for row in self.board:
+            r = []
+            for block in row:
+                r.append(block.serialize())
+            board.append(r)
+
+        return board

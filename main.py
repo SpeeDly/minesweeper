@@ -1,4 +1,5 @@
 import sys
+
 from PyQt5.QtWidgets import QApplication
 from minesweeper.ui.pyqt_ui import QMinesweeper
 from minesweeper.game.minesweeper import Minesweeper
