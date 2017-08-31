@@ -1,7 +1,7 @@
 import random
 
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QWidget, QMessageBox, QGridLayout
+from PyQt5.QtWidgets import QWidget, QMessageBox, QGridLayout, QAction
 
 from minesweeper.webui.webui import webUI
 from minesweeper.ui.widgets import QBlockButton
@@ -34,6 +34,11 @@ class QMinesweeperGame(QWidget):
                 button.on_left_click(self.reveal, block)
                 button.on_right_click(self.mark, block)
                 block.update = button.updateEvent
+
+    def closeEvent(self, event):
+        if not self.minesweeper.finished:
+            webUI.finish(self.game_id, -1)
+        event.accept()
 
     def mark(self, block):
         block.toggle_mark()
