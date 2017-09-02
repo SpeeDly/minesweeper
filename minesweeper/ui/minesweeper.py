@@ -1,9 +1,10 @@
 import random
 
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QWidget, QMessageBox, QGridLayout, QAction
+from PyQt5.QtWidgets import QWidget, QMessageBox, QGridLayout
 
 from minesweeper.webui.webui import webUI
+from minesweeper.game.exceptions import GameNotStarted
 from minesweeper.ui.widgets import QBlockButton
 
 
@@ -14,6 +15,8 @@ class QMinesweeperGame(QWidget):
         self.minesweeper = engine(width, height, bomb_number)
         self.minesweeper.generate_board()
         self.game_id = random.randint(1, 100000)
+        self.width = width
+        self.height = height
         self.initUI()
         self.show()
         self.minesweeper.show()
@@ -26,11 +29,17 @@ class QMinesweeperGame(QWidget):
         layout.setSpacing(11)
         self.setLayout(layout)
 
+        hint_button = QBlockButton('?')
+        self.layout().addWidget(hint_button, 0, self.width - 1)
+        hint_button.setToolTip('Hint')
+        hint_button.setStyleSheet('margin-bottom: 10px')
+        hint_button.on_left_click(self.generate_hint)
+
         for row in self.minesweeper.get_board():
             for block in row:
                 coords = block.get_coords()
                 button = QBlockButton()
-                self.layout().addWidget(button, coords[0], coords[1])
+                self.layout().addWidget(button, coords[0] + 2, coords[1])
                 button.on_left_click(self.reveal, block)
                 button.on_right_click(self.mark, block)
                 block.update = button.updateEvent
@@ -60,6 +69,13 @@ class QMinesweeperGame(QWidget):
                 self, self.tr("Victory!"), self.tr("You win :)"), QMessageBox.Ok)
             webUI.finish(self.game_id, 1)
             self.minesweeper.reset()
+
+    def generate_hint(self):
+        try:
+            self.minesweeper.generate_hint()
+        except GameNotStarted:
+            QMessageBox.information(
+                self, self.tr("Error!"), self.tr("The game is not started yet!"), QMessageBox.Ok)
 
     def sizeHint(self):
         return QSize(300, 300)

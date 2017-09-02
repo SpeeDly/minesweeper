@@ -28,9 +28,9 @@ class WebUI():
         except Exception as e:
             self.handle_server_exception(e)
 
-    def handle_server_exception(e):
+    def handle_server_exception(self, exception):
         # Log the exception
-        print(e)
+        print(exception)
 
 
 webUI = WebUI(HOST, PORT)
