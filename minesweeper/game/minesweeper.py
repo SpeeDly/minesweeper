@@ -24,6 +24,9 @@ class Minesweeper():
     def refresh(self):
         self.board.refresh()
 
+    def generate_hint(self):
+        self.board.generate_hint()
+
     def reset(self):
         self.board.reset()
         self.board.generate()
