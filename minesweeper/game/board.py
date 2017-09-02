@@ -1,6 +1,7 @@
 from random import randint
 
 from minesweeper.game.block import Block
+from minesweeper.game.exceptions import GameNotStarted
 
 
 class Board():
@@ -53,34 +54,63 @@ class Board():
         if coords[0] + 1 < self.width:
             return self.board[coords[0] + 1][coords[1]]
 
-    def increase_surrounding_blocks(self, block):
+    def get_surrounding_blocks(self, block):
+        surrounding_blocks = []
         top, left, bottom, right = self.get_top_block(block), self.get_left_block(block),\
             self.get_bottom_block(block), self.get_right_block(block)
 
         if top:
-            top.increase()
+            surrounding_blocks.append(top)
             if self.get_right_block(top):
-                self.get_right_block(top).increase()
+                surrounding_blocks.append(self.get_right_block(top))
             if self.get_left_block(top):
-                self.get_left_block(top).increase()
+                surrounding_blocks.append(self.get_left_block(top))
 
         if bottom:
-            bottom.increase()
+            surrounding_blocks.append(bottom)
             if self.get_right_block(bottom):
-                self.get_right_block(bottom).increase()
+                surrounding_blocks.append(self.get_right_block(bottom))
             if self.get_left_block(bottom):
-                self.get_left_block(bottom).increase()
+                surrounding_blocks.append(self.get_left_block(bottom))
 
         if left:
-            left.increase()
+            surrounding_blocks.append(left)
 
         if right:
-            right.increase()
+            surrounding_blocks.append(right)
+
+        return surrounding_blocks
+
+    def increase_surrounding_blocks(self, block):
+        near_blocks = self.get_surrounding_blocks(block)
+        for b in near_blocks:
+            b.increase()
 
     def refresh(self):
         for row in self:
             for block in row:
                 block.refresh()
+
+    def generate_hint(self):
+        block_to_risk = []
+
+        for row in self.board:
+            for block in row:
+                if not block.is_visible:
+                    risk = 0
+                    near_blocks = self.get_surrounding_blocks(block)
+                    for nb in near_blocks:
+                        if nb.is_visible:
+                            risk += nb.get_value()
+                    if risk != 0:
+                        block_to_risk.append((block, risk))
+
+        if not block_to_risk:
+            raise GameNotStarted
+
+        block_to_risk.sort(key=lambda el: el[1])
+        choosen_block = block_to_risk[0][0]
+        choosen_block.hint()
 
     def show(self):
         for row in self:

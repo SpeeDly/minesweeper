@@ -42,6 +42,9 @@ class Block():
     def refresh(self):
         self.update and self.update(self)
 
+    def hint(self):
+        self.update and self.update(self, hint=True)
+
     def reset(self):
         self.value = 0
         self.is_visible = False
