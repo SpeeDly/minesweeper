@@ -45,8 +45,6 @@ FLASK_APP=server/server.py flask run
 
 NB!: You can play the game, without starting the server!
 
-To start the serve
-
 ## TODO
 
 * Move the calls for the server in a separate thread.
