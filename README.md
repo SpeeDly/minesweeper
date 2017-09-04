@@ -3,8 +3,8 @@
 Minimalistic python game for the Python course in FMI, Sofia University.
 The game is written in python3, using the PyQt5 library.
 There are 2 modules:
-    - Server - Observing current games and providing functionality to watch it online
-    - Client - PyQt5 base user interface for playing minesweeper
+* Server - Observing current games and providing functionality to watch it online
+* Client - PyQt5 base user interface for playing minesweeper
 
 ## Getting Started
 
@@ -49,8 +49,8 @@ To start the serve
 
 ## TODO
 
-Move the calls for the server in a separate thread.
-Add fabric like library for abstracting of start commands.
+* Move the calls for the server in a separate thread.
+* Add fabric like library for abstracting of start commands.
 
 ## Authors
 
